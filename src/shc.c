@@ -769,8 +769,8 @@ static int parse_an_arg(int argc, char * argv[])
 	case 'e':
 		memset(tmp, 0, sizeof(tmp));
 		cnt = sscanf(optarg, "%4d/%2d/%2d %2d:%2d",
-			&tmp.tm_year, &tmp.tm_mon, &tmp.tm_mday,
-            &tmp.tm_hour, &tmp.tm_min, &ctrl);
+			&tmp->tm_year, &tmp->tm_mon, &tmp->tm_mday,
+            &tmp->tm_hour, &tmp->tm_min, &ctrl);
 		if (cnt == 5) {
 			// 月需要减去1,年需要减去1900
 			tmp->tm_mon--;
