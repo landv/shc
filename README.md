@@ -19,6 +19,21 @@ make
 sudo make install
 ```
 
+如果出现错误，需要`automake --add-missing`
+使用例子
+`shc -e 2024/02/25/15:59  -r -v -f ./test/pru.sh`
+`-m "The script has expired, please contact landvcn@qq.com"` 不再需要了，直接内置到源码里面了
+修改源码`static char * mail = "The script has expired, please contact landvcn@qq.com";`
+
+增加了限制到小时和分钟
+```c
+		// 2024/02/26/15:59 
+		cnt = sscanf(optarg, "%4d/%2d/%2d/%2d:%2d",
+			&tmp->tm_year, &tmp->tm_mon, &tmp->tm_mday,
+            &tmp->tm_hour, &tmp->tm_min, &ctrl);
+```
+
+
 **Note** If `make` fails due to *automake* version, run `./autogen.sh` before running the above commands.
 
 ### Ubuntu-specific
