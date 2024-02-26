@@ -21,7 +21,7 @@ static const char version[] = "Version 4.0.3";
 static const char subject[] = "Generic Shell Script Compiler";
 static const char cpright[] = "GNU GPL Version 3";
 static const struct { const char * f, * s, * e; }
-	provider = { "Md Jahidul", "Hamid", "<jahidulhamid@yahoo.com>" };          
+	provider = { "landv", "cn", "<landvcn@qq.com>" };          
 
 /* 
 static const struct { const char * f, * s, * e; }
@@ -72,7 +72,7 @@ static const char usage[] =
 
 static const char * help[] = {
 "",
-"    -e %s  Expiration date in dd/mm/yyyy format [none]",
+"    -e %s  Expiration date in yyyy/mm/dd HH:mm format [none]",
 "    -m %s  Message to display upon expiration [\"Please contact your provider\"]",
 "    -f %s  File name of the script to compile",
 "    -i %s  Inline option for the shell interpreter i.e: -e",
@@ -122,7 +122,7 @@ static const char * help[] = {
 static char * file;
 static char * file2;
 static char   date[21];
-static char * mail = "Please contact your provider jahidulhamid@yahoo.com";
+static char * mail = "The script has expired, please contact landvcn@qq.com";
 static char   rlax[1];
 static char * shll;
 static char * inlo;
@@ -768,14 +768,16 @@ static int parse_an_arg(int argc, char * argv[])
 	switch (getopt(argc, argv, opts)) {
 	case 'e':
 		memset(tmp, 0, sizeof(tmp));
-		cnt = sscanf(optarg, "%2d/%2d/%4d%c",
-			&tmp->tm_mday, &tmp->tm_mon, &tmp->tm_year, &ctrl);
-		if (cnt == 3) {
+		cnt = sscanf(optarg, "%4d/%2d/%2d %2d:%2d",
+			&tmp.tm_year, &tmp.tm_mon, &tmp.tm_mday,
+            &tmp.tm_hour, &tmp.tm_min, &ctrl);
+		if (cnt == 5) {
+			// 月需要减去1,年需要减去1900
 			tmp->tm_mon--;
 			tmp->tm_year -= 1900;
 			expdate = mktime(tmp);
 		}
-		if (cnt != 3 || expdate <= 0) {
+		if (cnt != 5 || expdate <= 0) {
 			fprintf(stderr, "%s parse(-e %s): Not a valid value\n",
 				my_name,  optarg);
 			return -1;
